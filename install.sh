@@ -7,7 +7,7 @@ if [ "$TYPST_LOCAL_PACKAGES" == "" ]; then
     exit 1
 fi
 
-install_dir=$TYPST_LOCAL_PACKAGES/cea-template/main
+install_dir=$TYPST_LOCAL_PACKAGES/cea-template/$(cat VERSION)
 
 # Remove installation if it exists.
 rm -rf $install_dir/
