@@ -14,6 +14,11 @@
 #let UNIVERSITE_PARIS_SACLAY_LOGO = "assets/universite_paris_saclay_logo.png"
 #let IP_PARIS_LOGO = "assets/ip_paris_logo.png"
 
+// Use to get an image of logos by using the template's local path. The distinction between paths
+// local to the template or local to the document is not currently supported, see
+// https://github.com/typst/typst/issues/971.
+#let logo_image(logo, width: auto, height: auto) = image(logo, width: width, height: height)
+
 
 // ========== PLAIN DOCUMENT ==========
 // Set up the formatting for the document (font, size, section numbering etc.)
