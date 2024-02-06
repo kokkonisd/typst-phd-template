@@ -1,7 +1,7 @@
 [package]
-name = "cea-template"
+name = "phd-template"
 version = "0.1.0"
 entrypoint = "template.typ"
 authors = ["Dimitri Kokkonis (kokkonisd@gmail.com)"]
 license = "Unlicense"
-description = "A template for CEA documents & presentations."
+description = "A template for documents & presentations relating to my PhD."

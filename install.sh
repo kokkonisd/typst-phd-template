@@ -7,12 +7,12 @@ if [ "$TYPST_LOCAL_PACKAGES" == "" ]; then
     exit 1
 fi
 
-install_dir=$TYPST_LOCAL_PACKAGES/cea-template/$(cat VERSION)
+install_dir=$TYPST_LOCAL_PACKAGES/phd-template/$(cat VERSION)
 
 # Remove installation if it exists.
 rm -rf $install_dir/
 # Remake installation from scratch.
 mkdir -p $install_dir/
 # Clone & remove git stuff.
-git clone git@github.com:kokkonisd/typst-cea-template.git $install_dir/
+git clone git@github.com:kokkonisd/typst-phd-template.git $install_dir/
 rm -rf $install_dir/.git*
