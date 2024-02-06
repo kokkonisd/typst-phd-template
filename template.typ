@@ -138,30 +138,14 @@
 #let config = state(
     "config",
     (
-        title: "Presentation title",
-        title_short: "Short title",
-        date: datetime.today(),
-        subtitle: "Subtitle",
-        authors: (
-            (
-                name: "Default author",
-                organization: "Default organization",
-                email: "default@email.com"
-            ),
-        ),
-        authors_short: (
-            "D. Author",
-        ),
-        logos: (
-            CEA_LIST_LOGO,
-            UNIVERSITE_PARIS_SACLAY_LOGO,
-            IP_PARIS_LOGO,
-        ),
-        footer_logos: (
-            CEA_LIST_LOGO,
-            UNIVERSITE_PARIS_SACLAY_LOGO,
-            IP_PARIS_LOGO,
-        ),
+        title: none,
+        title_short: none,
+        date: none,
+        subtitle: none,
+        authors: (),
+        authors_short: (),
+        logos: (),
+        footer_logos: (),
         current_section: none
     )
 )
@@ -186,14 +170,30 @@
 // - footer_logos: a list of file paths to various logos that should be inserted in the footer.
 // - doc: the rest of the document (implicit).
 #let presentation_setup(
-    title: none,
-    title_short: none,
-    date: none,
-    subtitle: none,
-    authors: none,
-    authors_short: none,
-    logos: (),
-    footer_logos: (),
+    title: "Presentation title",
+    title_short: "Short title",
+    date: datetime.today(),
+    subtitle: "Subtitle",
+    authors: (
+        (
+            name: "Default author",
+            organization: "Default organization",
+            email: "default@email.com"
+        ),
+    ),
+    authors_short: (
+        "D. Author",
+    ),
+    logos: (
+        CEA_LIST_LOGO,
+        UNIVERSITE_PARIS_SACLAY_LOGO,
+        IP_PARIS_LOGO,
+    ),
+    footer_logos: (
+        CEA_LIST_LOGO,
+        UNIVERSITE_PARIS_SACLAY_LOGO,
+        IP_PARIS_LOGO,
+    ),
     doc,
 ) = {
     show: doc_setup
