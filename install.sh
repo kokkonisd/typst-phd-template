@@ -30,7 +30,9 @@ if [ "$TYPST_LOCAL_PACKAGES" == "" ]; then
     fail "TYPST_LOCAL_PACKAGES is not defined/empty, stopping."
 fi
 
-install_dir=$TYPST_LOCAL_PACKAGES/phd-template/$(cat VERSION)
+# Strip any `-dev` that the version might contain, because Typst doesn't *actually* support
+# Semver...
+install_dir=$TYPST_LOCAL_PACKAGES/phd-template/$(cat VERSION | cut -d '-' -f 1 )
 print_info "Installing local Typst package at '$install_dir'..."
 
 if [ -d $install_dir ]; then
