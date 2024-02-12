@@ -1,6 +1,6 @@
 // TEMPLATE FOR PHD PRESENTATIONS.
 
-#import "/common.typ": *
+#import "common.typ": *
 
 
 // ========== COLORS ==========
@@ -302,7 +302,7 @@
             email: "default@email.com"
         ),
     ),
-    authors_size: 16pt,
+    authors_size: 14pt,
     authors_short: (
         "D. Author",
     ),

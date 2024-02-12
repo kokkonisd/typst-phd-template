@@ -1,6 +1,6 @@
 // TEMPLATE FOR PHD REPORTS.
 
-#import "/common.typ": *
+#import "common.typ": *
 
 
 // Define an author group.
@@ -42,7 +42,7 @@
             }
         ),
     )
-)
+]
 
 
 // Define the front page of the report.
@@ -258,7 +258,7 @@
             ),
         ),
     ),
-    authors_size: 16pt,
+    authors_size: 12pt,
     logos: (
         LOGO_CEA_LIST,
         LOGO_UNIVERSITE_PARIS_SACLAY,
