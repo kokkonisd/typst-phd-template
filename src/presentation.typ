@@ -224,7 +224,8 @@
 #let slide(body, title: "Slide title", size: 20pt, inset: 20pt) = block(
     width: 100%,
     height: 100%,
-    inset: inset
+    inset: inset,
+    fill: PRESENTATION_BACKGROUND_COLOR,
 )[
     #metadata(title) <slide_title>
     #set par(justify: true)
