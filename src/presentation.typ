@@ -163,7 +163,7 @@
     authors_size: none,
     logos: (),
     logos_size: none,
-) = block(width: 100%, height: 100%)[
+) = block(width: 100%, height: 100%, fill: PRESENTATION_BACKGROUND_COLOR)[
     #set align(center + horizon)
 
     // Title block.
