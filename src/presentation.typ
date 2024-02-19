@@ -327,7 +327,7 @@
         paper: "presentation-16-9",
         numbering: none,
         number-align: bottom,
-        margin: (x: 0pt, top: header_height, bottom: footer_height),
+        margin: 0pt,
     )
     set par(justify: false)
     set heading(numbering: none)
@@ -355,6 +355,7 @@
     counter(page).update(0)
     set page(
         numbering: "1",
+        margin: (x: 0pt, top: header_height, bottom: footer_height),
         header: _slide_header,
         header-ascent: 0%,
         footer: _slide_footer(title: title_short, authors: authors_short, logos: footer_logos),
