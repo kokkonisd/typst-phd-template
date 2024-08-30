@@ -1,4 +1,4 @@
-// Report template.
-#import "report.typ": *
-// Presentation template.
+#import "colors.typ": *
+#import "common.typ": *
 #import "presentation.typ": *
+#import "report.typ": *

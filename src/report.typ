@@ -1,6 +1,9 @@
 // TEMPLATE FOR PHD REPORTS.
 
+#import "colors.typ": *
 #import "common.typ": *
+#import "fonts.typ": *
+#import "logos.typ": *
 
 
 // Define an author group.
@@ -9,18 +12,18 @@
 // to a broader multi-member group (e.g. "External committee").
 //
 // Parameters:
-// - group_title: the title of the group.
+// - group-title: the title of the group.
 // - members: the members of the group. The expected type is an array of author dictionaries,
 //   containing at least the name of the author, and optionally the organization and the email of
 //   the author.
 // - size: the size of the authors.
-#let _author_group(group_title: none, members: none, size: none) = box[
+#let _author-group(group-title: none, members: none, size: none) = box[
     #set text(size: size)
 
     #stack(
         dir: ttb,
         spacing: 8pt,
-        [*#group_title*],
+        [*#group-title*],
         // Put all the members under the same group title.
         stack(
             dir: ltr,
@@ -53,28 +56,28 @@
 //
 // Parameters:
 // - title: the title of the report.
-// - title_size: the size of the title.
+// - title-size: the size of the title.
 // - subtitle: the subtitle of the report.
-// - subtitle_size: the size of the subtitle.
+// - subtitle-size: the size of the subtitle.
 // - date: the date of the report.
-// - date_size: the size of the date.
+// - date-size: the size of the date.
 // - authors: the authors and other people that should be mentioned in the front page. The expected
 //   type is an array of rows, where each row can contain one or more groups (with one or more
-//   members). See default arguments in `report_setup()`.
-// - authors_size: the size of the authors.
+//   members). See default arguments in `report-setup()`.
+// - authors-size: the size of the authors.
 // - logos: the logos to put in the front page. The expected type is `image()`, not `str`.
-// - logos_size: the size of the logos.
-#let _report_front_page(
+// - logos-size: the size of the logos.
+#let _report-front-page(
     title: none,
-    title_size: none,
+    title-size: none,
     subtitle: none,
-    subtitle_size: none,
+    subtitle-size: none,
     date: none,
-    date_size: none,
+    date-size: none,
     authors: (),
-    authors_size: none,
+    authors-size: none,
     logos: (),
-    logos_size: none,
+    logos-size: none,
 ) = block(width: 100%, height: 100%)[
     #set align(center + horizon)
 
@@ -82,15 +85,15 @@
     #stack(
         dir: ttb,
         spacing: 15pt,
-        text(size: title_size)[*#title*],
-        text(size: subtitle_size)[#subtitle],
-        text(size: date_size)[#date.display("[day padding:zero]/[month padding:zero]/[year]")],
+        text(size: title-size)[*#title*],
+        text(size: subtitle-size)[#subtitle],
+        text(size: date-size)[#date.display("[day padding:zero]/[month padding:zero]/[year]")],
         stack(
             dir: ltr,
             spacing: 15pt,
             ..for logo in logos {
                 (
-                    image(logo.path, height: logos_size),
+                    image(logo.path, height: logos-size),
                 )
             }
         ),
@@ -103,18 +106,18 @@
         dir: ttb,
         spacing: 30pt,
         // There may be multiple rows of authors.
-        ..for author_row in authors {
+        ..for author-row in authors {
             (
                 stack(
                     dir: ltr,
                     spacing: 20pt,
                     // Stack the author groups of a given row horizontally.
-                    ..for author_group in author_row {
+                    ..for author-group in author-row {
                         (
-                            _author_group(
-                                group_title: author_group.group,
-                                members: author_group.members,
-                                size: authors_size,
+                            _author-group(
+                                group-title: author-group.group,
+                                members: author-group.members,
+                                size: authors-size,
                             ),
                         )
                     }
@@ -130,14 +133,14 @@
 // Parameters:
 // - title: the title of the report.
 // - subtitle: the subtitle of the report.
-#let _page_footer(title: none, subtitle: none) = block(width: 100%, height: 100%)[
+#let _page-footer(title: none, subtitle: none) = block(width: 100%, height: 100%)[
     #set align(horizon)
 
     #grid(
         columns: (1fr, 50pt),
         [
             #set align(left)
-            #set text(style: "italic")
+            #set text(weight: "regular", style: "italic")
 
             #title
             #if subtitle != none [
@@ -147,7 +150,7 @@
         [
             #set align(right)
 
-            #counter(page).display("1 / 1", both: true)
+            #context counter(page).display("1 / 1", both: true)
         ],
     )
 ]
@@ -159,7 +162,7 @@
 //
 // Parameters:
 // - signature: the title of the signature (e.g. "Signature of the thesis supervisor").
-#let _signature_page(signature: none) = block(width: 100%, height: 100%)[
+#let _signature-page(signature: none) = block(width: 100%, height: 100%)[
     #set align(center + horizon)
 
     #box[
@@ -183,28 +186,28 @@
 //
 // Parameters:
 // - title: the title of the report.
-// - title_size: the size of the title.
+// - title-size: the size of the title.
 // - subtitle: the subtitle of the report.
-// - subtitle_size: the size of the subtitle.
+// - subtitle-size: the size of the subtitle.
 // - date: the date of the report. The expected type is `datetime()`, not `str`.
-// - date_size: the size of the date.
+// - date-size: the size of the date.
 // - authors: the authors and other people that need to appear in the front page of the report. For
 //   the expected type, see the default value below.
-// - authors_size: the size of the authors.
+// - authors-size: the size of the authors.
 // - logos: the logos to appear on the front page of the report. The expected type is `image()`,
 //   not `str`.
-// - logos_size: the size of the logos.
+// - logos-size: the size of the logos.
 // - signature: the title of the signature, if one is needed. If `none`, no signature page will be
 //   generated.
 // - toc: the table of contents (if `none`, the default one will be used).
 // - bibliography: the bibliography to be used in the report.
-#let report_setup(
+#let report-setup(
     title: "Report title",
-    title_size: 40pt,
+    title-size: 40pt,
     subtitle: "Report subtitle",
-    subtitle_size: 25pt,
+    subtitle-size: 25pt,
     date: datetime.today(),
-    date_size: 16pt,
+    date-size: 16pt,
     authors: (
         (
             (
@@ -258,46 +261,57 @@
             ),
         ),
     ),
-    authors_size: 12pt,
+    authors-size: 12pt,
     logos: (
         LOGO_CEA_LIST,
         LOGO_UNIVERSITE_PARIS_SACLAY,
         LOGO_IP_PARIS,
     ),
-    logos_size: 60pt,
+    logos-size: 60pt,
     signature: "Signature of the thesis supervisor",
     toc: none,
     bibliography: none,
     doc,
 ) = {
     // Main page/font formatting.
-    show: _common_setup
+    set page(numbering: "1")
+    set text(
+        font: MAIN_FONT,
+        size: 11pt
+    )
+    set heading(numbering: "1.")
+    set par(justify: true)
+    show link: set text(fill: blue)
+    show link: underline
+    set list(marker: ([•], [--]))
+    set enum(numbering: "1.a.")
+    
     // Disable numbering for the first few pages.
     set page(numbering: none)
 
     // Start with the front page.
-    _report_front_page(
+    _report-front-page(
         title: title,
-        title_size: title_size,
+        title-size: title-size,
         subtitle: subtitle,
-        subtitle_size: subtitle_size,
+        subtitle-size: subtitle-size,
         date: date,
-        date_size: date_size,
+        date-size: date-size,
         authors: authors,
-        authors_size: authors_size,
+        authors-size: authors-size,
         logos: logos,
-        logos_size: logos_size,
+        logos-size: logos-size,
     )
 
     // Add the signature page if needed.
     if signature != none {
-        _signature_page(signature: signature)
+        _signature-page(signature: signature)
     }
 
     // Re-apply numbering from now on, and add the footer.
     set page(
         numbering: "1",
-        footer: _page_footer(title: title, subtitle: subtitle),
+        footer: _page-footer(title: title, subtitle: subtitle),
     )
 
     // Add the table of contents.

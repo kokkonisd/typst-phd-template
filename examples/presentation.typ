@@ -1,11 +1,11 @@
-// Replace 0.2.0 with the version of the template you've installed.
-#import "@local/phd-template:0.2.0" as template
+// Replace 0.2.3 with the version of the template you've installed.
+#import "@local/phd-template:0.2.3" as template
 
 
-#show: doc => template.presentation_setup(
+#show: doc => template.presentation-setup(
     doc,
     title: "My Cool Presentation",
-    title_short: "Cool Presentation",
+    title-short: "Cool Presentation",
     subtitle: "It's Really Interesting, I Swear",
     authors: (
         (
@@ -14,7 +14,7 @@
             email: "me@mylab.com",
         ),
     ),
-    authors_short: (
+    authors-short: (
         "I. Me",
     ),
 )
@@ -27,7 +27,7 @@
 ]
 
 
-#template.section_slide(title: "Introduction", subtitle: "where I introduce stuff")
+#template.section-slide(title: "Introduction", subtitle: "where I introduce stuff")
 
 #template.slide(title: "Background (1/2)")[
     #lorem(100)
@@ -38,7 +38,7 @@
 ]
 
 
-#template.section_slide(title: "Some Stuff", subtitle: "That's Interesting")
+#template.section-slide(title: "Some Stuff", subtitle: "That's Interesting")
 
 #template.slide(title: "Primary stuff")[
     - One
@@ -53,11 +53,11 @@
 ]
 
 
-#template.section_slide(title: "Conclusion", subtitle: "wrapping it up")
+#template.section-slide(title: "Conclusion", subtitle: "wrapping it up")
 
 #template.slide(title: "What I Learned")[
     - nothing
 ]
 
 
-#template.section_slide(title: "Thank you for your attention :)", subtitle: "Any questions?")
+#template.section-slide(title: "Thank you for your attention :)", subtitle: "Any questions?")

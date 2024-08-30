@@ -1,11 +1,6 @@
-// TEMPLATE FOR PHD PRESENTATIONS.
-
-#import "common.typ": *
-
-
-// ========== COLORS ==========
-#let PRESENTATION_MAIN_COLOR = rgb("#8a0f1d")
-#let PRESENTATION_BACKGROUND_COLOR = luma(240)
+#import "colors.typ": *
+#import "fonts.typ": *
+#import "logos.typ": *
 
 
 // Get the title of the current slide.
@@ -15,18 +10,18 @@
 //
 // Parameters:
 // - loc: the location to get the current slide for.
-// - in_header: if `true`, make the function behave as if it were called inside a header (before
+// - in-header: if `true`, make the function behave as if it were called inside a header (before
 //   the slide is named); otherwise, it'll behave as if it were called in the body or the footer
 //   (after the slide is named).
-#let _current_slide(loc, in_header: false) = {
-    if in_header {
+#let _current-slide(loc, in-header: false) = {
+    if in-header {
         // The header is defined before the title of the slide; for that reason, we need to look
         // for the first slide title definition after the current location.
-        query(selector(<slide_title>).after(loc, inclusive: true), loc).first().value
+        query(selector(<slide-title>).after(loc, inclusive: true)).first().value
     } else {
         // We're either in the body or the footer, so the title of the slide is defined before this
         // location; this is why we need to look backwards.
-        query(selector(<slide_title>).before(loc, inclusive: true), loc).last().value
+        query(selector(<slide-title>).before(loc, inclusive: true)).last().value
     }
 }
 
@@ -34,34 +29,38 @@
 // Get the title of the current section of the presentation.
 //
 // The title of the current section will be fetched through metadata tags, if it exists.
-// See the beginning of the `section_slide()` function.
+// See the beginning of the `section-slide()` function.
 //
 // Parameters:
 // - loc: the location to get the current section for.
-#let _current_section(loc) = {
+#let _current-section(loc) = {
     // Since the section slides themselves do not have a header, we need to always look back to get
     // the last section name.
-    query(selector(<section_title>).before(loc), loc).last().value
+    query(selector(<section-title>).before(loc)).last().value
 }
 
 
 // Define the header of the slides.
-#let _slide_header = block(width: 100%, height: 100%, fill: PRESENTATION_MAIN_COLOR, inset: 10pt)[
-    #set text(fill: PRESENTATION_BACKGROUND_COLOR)
+#let _slide-header = block(width: 100%, height: 100%, fill: MAIN_COLOR, inset: 10pt)[
+    #set text(fill: SECONDARY_COLOR)
 
     #grid(
-        columns: (auto, auto),
+        columns: (2fr, 1fr),
         box(width: 100%, height: 100%)[
             #set align(left + horizon)
 
             // Get the slide title for the current slide.
-            #locate(loc => text(_current_slide(loc, in_header: true), size: 30pt))
+            #context {
+                text(_current-slide(here(), in-header: true), size: 30pt)
+            }
         ],
         box(width: 100%, height: 100%)[
             #set align(right + horizon)
 
             // Get the section title for the current slide (if it exists, otherwise it'll be empty).
-            #locate(loc => _current_section(loc))
+            #context {
+                _current-section(here())
+            }
         ],
     )
 ]
@@ -73,15 +72,15 @@
 // - title: the (short) title of the presentation, to be shown in the footer.
 // - authors: the array of short author names (`array[str]`) to be shown in the footer.
 // - logos: the array of logo images (`array[image()]`) to be shown in the footer.
-#let _slide_footer(title: none, authors: (), logos: ()) = block(
+#let _slide-footer(title: none, authors: (), logos: ()) = block(
     width: 100%,
     height: 100%,
-    fill: PRESENTATION_MAIN_COLOR
+    fill: MAIN_COLOR
 )[
-    #set text(fill: PRESENTATION_BACKGROUND_COLOR)
+    #set text(fill: SECONDARY_COLOR)
 
     #grid(
-        columns: (auto, auto),
+        columns: (2fr, 1fr),
         box(width: 100%, height: 100%)[
             #set align(left + horizon)
 
@@ -93,7 +92,7 @@
                     spacing: 2pt,
                     ..for logo in logos {
                         (
-                            box(fill: PRESENTATION_BACKGROUND_COLOR)[
+                            box(fill: SECONDARY_COLOR)[
                                 #image(logo.path, height: 100%)
                             ],
                         )
@@ -101,14 +100,14 @@
                 ),
                 text(style: "italic")[
                     #title
-                    #locate(loc => {
-                        if _current_section(loc) != none [
-                            *|* #_current_section(loc)
+                    #context {
+                        if _current-section(here()) != none [
+                            *•* #_current-section(here())
                         ]
-                        if _current_slide(loc) != none [
-                            *|* #_current_slide(loc)
+                        if _current-slide(here()) != none [
+                            *•* #_current-slide(here())
                         ]
-                    })
+                    }
                 ],
             )
         ],
@@ -128,7 +127,7 @@
                     }
                 ],
                 [
-                    #counter(page).display()
+                    #context counter(page).display()
                 ],
             )
         ],
@@ -142,44 +141,47 @@
 //
 // Parameters:
 // - title: the title of the presentation.
-// - title_size: the size of the title.
+// - title-size: the size of the title.
 // - subtitle: the subtitle of the presentation.
-// - subtitle_size: the size of the subtitle.
+// - subtitle-size: the size of the subtitle.
+// - cover-image: an image to use as the cover of the title page.
 // - date: the date of the presentation. The expected type is `datetime()`, not `str..
-// - date_size: the size of the date.
+// - date-size: the size of the date.
 // - authors: the authors of the presentation. For the expected type, see the defaults in
-//   `presentation_setup()`.
-// - authors_size: the size of the authors,
+//   `presentation-setup()`.
+// - authors-size: the size of the authors,
 // - logos: the logos of the presentation.
-// - logos_size: the size of the logos.
-#let _title_slide(
+// - logos-size: the size of the logos.
+#let _title-slide(
     title: none,
-    title_size: none,
+    title-size: none,
     subtitle: none,
-    subtitle_size: none,
+    subtitle-size: none,
+    cover-image: none,
     date: none,
-    date_size: none,
+    date-size: none,
     authors: (),
-    authors_size: none,
+    authors-size: none,
     logos: (),
-    logos_size: none,
-) = block(width: 100%, height: 100%, fill: PRESENTATION_BACKGROUND_COLOR)[
+    logos-size: none,
+) = block(width: 100%, height: 100%, fill: SECONDARY_COLOR)[
     #set align(center + horizon)
 
     // Title block.
     #stack(
         dir: ttb,
         spacing: 15pt,
-        text(fill: PRESENTATION_MAIN_COLOR, size: title_size)[#title],
-        text(size: subtitle_size)[#subtitle],
-        text(size: date_size)[#date.display()],
+        text(size: title-size, fill: MAIN_COLOR)[#title],
+        text(size: subtitle-size)[#subtitle],
+        if cover-image != none { cover-image },
+        text(size: date-size)[#date.display()],
     )
 
     #v(20pt)
 
     // Authors.
     #box[
-        #set text(size: authors_size)
+        #set text(size: authors-size)
 
         #stack(
             dir: ltr,
@@ -188,7 +190,7 @@
                 (
                     stack(
                         dir: ttb,
-                        spacing: 10pt,
+                        spacing: 4pt,
                         author.name,
                         if "organization" in author { author.organization },
                         if "email" in author { link("mailto:" + author.email) },
@@ -206,7 +208,7 @@
         spacing: 20pt,
         ..for logo in logos {
             (
-                image(logo.path, height: logos_size),
+                image(logo.path, height: logos-size),
             )
         }
     )
@@ -225,9 +227,9 @@
     width: 100%,
     height: 100%,
     inset: inset,
-    fill: PRESENTATION_BACKGROUND_COLOR,
+    fill: SECONDARY_COLOR,
 )[
-    #metadata(title) <slide_title>
+    #metadata(title) <slide-title>
     #set par(justify: true)
     #set text(size: size)
 
@@ -242,25 +244,25 @@
 //
 // Parameters:
 // - title: the title of the section.
-// - title_size: the size of the title.
+// - title-size: the size of the title.
 // - subtitle: the subtitle of the section (optional).
-// - subtitle_size: the size of the subtitle.
-#let section_slide(
+// - subtitle-size: the size of the subtitle.
+#let section-slide(
     title: "Section title",
-    title_size: 40pt,
+    title-size: 40pt,
     subtitle: none,
-    subtitle_size: 30pt
+    subtitle-size: 30pt
 ) = {
     set page(numbering: none, header: none, footer: none, margin: 0pt)
 
-    block(width: 100%, height: 100%, fill: PRESENTATION_MAIN_COLOR)[
-        #metadata(title) <section_title>
-        #set text(fill: PRESENTATION_BACKGROUND_COLOR)
+    block(width: 100%, height: 100%, fill: MAIN_COLOR)[
+        #metadata(title) <section-title>
+        #set text(fill: SECONDARY_COLOR)
         #set align(center + horizon)
 
-        #text(size: title_size)[*#title*]
+        #text(size: title-size)[*#title*]
 
-        #text(size: subtitle_size)[#subtitle]
+        #text(size: subtitle-size)[#subtitle]
     ]
 }
 
@@ -271,31 +273,33 @@
 //
 // Parameters:
 // - title: the title of the presentation.
-// - title_size: the size of the title.
-// - title_short: a short version of the title that appears in the footer.
+// - title-size: the size of the title.
+// - title-short: a short version of the title that appears in the footer.
 // - subtitle: the subtitle of the presentation.
-// - subtitle_size: the size of the subtitle.
+// - subtitle-size: the size of the subtitle.
+// - cover-image: an image to put as a cover on the title page.
 // - date: a date to put in the first slide of the presentation (should be provided in actual date
 //   form, not string form (e.g. `datetime(year: 2011, month: 8, day: 25)`).
-// - date_size: the size of the date.
+// - date-size: the size of the date.
 // - authors: the list of authors of the presentation. The argument should be of the form
 //   `((name: _, organization: _, email: _), ...)`.
-// - authors_size: the size of the authors.
-// - authors_short: a list of shortened names of the authors that appears in the footer (e.g.
+// - authors-size: the size of the authors.
+// - authors-short: a list of shortened names of the authors that appears in the footer (e.g.
 //   `("name", "here", ...)`).
 // - logos: a list of logos that should be inserted in the first slide of the presentation. The
 //   expected type is `image()`, not `str`.
-// - footer_logos: a list of logos that should be inserted in the footer. The expected type is
+// - footer-logos: a list of logos that should be inserted in the footer. The expected type is
 //   `image()`, not `str`.
 // - doc: the rest of the document (implicit).
-#let presentation_setup(
+#let presentation-setup(
     title: "Presentation title",
-    title_size: 40pt,
-    title_short: "Short title",
+    title-size: 40pt,
+    title-short: "Short title",
     subtitle: "Subtitle",
-    subtitle_size: 25pt,
+    subtitle-size: 25pt,
+    cover-image: none,
     date: datetime.today(),
-    date_size: 16pt,
+    date-size: 16pt,
     authors: (
         (
             name: "Default author",
@@ -303,8 +307,8 @@
             email: "default@email.com"
         ),
     ),
-    authors_size: 14pt,
-    authors_short: (
+    authors-size: 14pt,
+    authors-short: (
         "D. Author",
     ),
     logos: (
@@ -312,17 +316,17 @@
         LOGO_UNIVERSITE_PARIS_SACLAY,
         LOGO_IP_PARIS,
     ),
-    logos_size: 40pt,
-    footer_logos: ( LOGO_CEA_LIST,
+    logos-size: 40pt,
+    footer-logos: (
+        LOGO_CEA_LIST,
         LOGO_UNIVERSITE_PARIS_SACLAY,
         LOGO_IP_PARIS,
     ),
-    header_height: 45pt,
-    footer_height: 20pt,
+    header-height: 45pt,
+    footer-height: 20pt,
     doc,
 ) = {
     // Main page/font formatting.
-    show: _common_setup
     set page(
         paper: "presentation-16-9",
         numbering: none,
@@ -331,34 +335,47 @@
     )
     set par(justify: false)
     set heading(numbering: none)
+    set text(font: MAIN_FONT)
 
-    _title_slide(
+    // Lists.
+    set list(marker: ([•], [--]))
+    set enum(numbering: "1.a.")
+
+    // Links.
+    show link: set text(fill: blue)
+    show link: underline
+
+    // Raw/code blocks.
+    show raw: set text(font: CODE_FONT)
+
+    _title-slide(
         title: title,
-        title_size: title_size,
+        title-size: title-size,
         subtitle: subtitle,
-        subtitle_size: subtitle_size,
+        subtitle-size: subtitle-size,
+        cover-image: cover-image,
         date: date,
-        date_size: date_size,
+        date-size: date-size,
         authors: authors,
-        authors_size: authors_size,
+        authors-size: authors-size,
         logos: logos,
-        logos_size: logos_size,
+        logos-size: logos-size,
     )
 
     // Set the slide & section titles for the first time (to none, since there aren't any yet).
     [
-        #metadata(none) <slide_title>
-        #metadata(none) <section_title>
+        #metadata(none) <slide-title>
+        #metadata(none) <section-title>
     ]
 
     // Reset the page counter after the title slide.
     counter(page).update(0)
     set page(
         numbering: "1",
-        margin: (x: 0pt, top: header_height, bottom: footer_height),
-        header: _slide_header,
+        margin: (x: 0pt, top: header-height, bottom: footer-height),
+        header: _slide-header,
         header-ascent: 0%,
-        footer: _slide_footer(title: title_short, authors: authors_short, logos: footer_logos),
+        footer: _slide-footer(title: title-short, authors: authors-short, logos: footer-logos),
         footer-descent: 0%,
     )
 

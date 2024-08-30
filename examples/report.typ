@@ -1,12 +1,12 @@
-// Replace 0.2.0 with the version of the template you've installed.
-#import "@local/phd-template:0.2.0" as template
+// Replace 0.2.3 with the version of the template you've installed.
+#import "@local/phd-template:0.2.3" as template
 
 
-#show: doc => template.report_setup(
+#show: doc => template.report-setup(
     doc,
     title: "Annual thesis report",
     subtitle: "Very interesting and long title of the thesis",
-    subtitle_size: 20pt,
+    subtitle-size: 20pt,
     date: datetime(day: 23, month: 04, year: 2025),
     authors: (
         (
