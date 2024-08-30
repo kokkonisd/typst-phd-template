@@ -1,6 +1,6 @@
 [package]
 name = "phd-template"
-version = "0.2.3"
+version = "0.2.4"
 entrypoint = "src/lib.typ"
 authors = ["Dimitri Kokkonis (kokkonisd@gmail.com)"]
 license = "Unlicense"
